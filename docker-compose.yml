@@ -1,0 +1,137 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: monitormach_postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - monitormach_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  logging_service:
+    build: ./logging_service
+    container_name: monitormach_logging
+    ports:
+      - "8004:8000"
+    volumes:
+      - ./logging_service/logs:/app/logs
+    networks:
+      - monitormach_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  poke_stats:
+    build: ./poke_stats
+    container_name: monitormach_poke_stats
+    ports:
+      - "8002:8000"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      LOGGING_SERVICE_URL: ${LOGGING_SERVICE_URL}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      logging_service:
+        condition: service_healthy
+    networks:
+      - monitormach_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  poke_api:
+    build: ./poke_api
+    container_name: monitormach_poke_api
+    ports:
+      - "8001:8000"
+    environment:
+      POKEAPI_BASE_URL: ${POKEAPI_BASE_URL}
+      LOGGING_SERVICE_URL: ${LOGGING_SERVICE_URL}
+    depends_on:
+      logging_service:
+        condition: service_healthy
+    networks:
+      - monitormach_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  poke_images:
+    build: ./poke_images
+    container_name: monitormach_poke_images
+    ports:
+      - "8003:8000"
+    environment:
+      IMAGES_DIR: ${IMAGES_DIR}
+      LOGGING_SERVICE_URL: ${LOGGING_SERVICE_URL}
+    volumes:
+      - ./poke_images/images:/app/images
+    depends_on:
+      logging_service:
+        condition: service_healthy
+    networks:
+      - monitormach_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  search_api:
+    build: ./search_api
+    container_name: monitormach_search_api
+    ports:
+      - "8000:8000"
+    environment:
+      POKE_API_URL: ${POKE_API_URL}
+      POKE_STATS_URL: ${POKE_STATS_URL}
+      POKE_IMAGES_URL: ${POKE_IMAGES_URL}
+      LOGGING_SERVICE_URL: ${LOGGING_SERVICE_URL}
+    depends_on:
+      poke_api:
+        condition: service_healthy
+      poke_stats:
+        condition: service_healthy
+      poke_images:
+        condition: service_healthy
+      logging_service:
+        condition: service_healthy
+    networks:
+      - monitormach_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  monitormach_network:
+    driver: bridge
