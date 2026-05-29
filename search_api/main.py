@@ -11,6 +11,12 @@ import os
 from datetime import datetime
 import time
 import asyncio
+import logging
+import sys
+
+# Configurar logging
+logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stdout)])
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Search API Service", version="1.0.0")
 
@@ -63,9 +69,19 @@ async def send_log(api: str, function: str, message: str, level: str = "INFO", l
                 "level": level,
                 "latency_ms": latency_ms
             }
-            await client.post(f"{LOGGING_SERVICE_URL}/logs", json=payload, timeout=5.0)
+            response = await client.post(f"{LOGGING_SERVICE_URL}/logs", json=payload, timeout=5.0)
+
+            if response.status_code == 200:
+                logger.info(f"Log sent: {api}.{function}")
+            else:
+                logger.warning(f"Log send failed with status {response.status_code}")
+
+    except httpx.ConnectError as e:
+        logger.error(f"Cannot connect to logging service: {e}")
+    except httpx.TimeoutException as e:
+        logger.error(f"Timeout sending log: {e}")
     except Exception as e:
-        print(f"Error sending log: {e}")
+        logger.error(f"Error sending log: {e}", exc_info=True)
 
 
 # ==================== Helper Functions ====================

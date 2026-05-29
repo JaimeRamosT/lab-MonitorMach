@@ -3,8 +3,7 @@ Logging Microservice
 Centraliza los logs de todos los microservicios en archivos JSON locales (uno por día)
 """
 
-from fastapi import FastAPI, HTTPException, Depends
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, date
@@ -12,12 +11,29 @@ import json
 import os
 from pathlib import Path
 import uuid
+import logging
+import sys
+
+# ==================== Logging Configuration ====================
+# Configurar logging de Python para ver errores en stdout
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Logging Service", version="1.0.0")
 
 # Configuration
 LOGS_DIR = os.getenv('LOGS_DIR', '/app/logs')
 Path(LOGS_DIR).mkdir(parents=True, exist_ok=True)
+
+logger.info(f"Logs directory: {LOGS_DIR}")
+logger.info(f"Logs directory exists: {os.path.exists(LOGS_DIR)}")
+logger.info(f"Logs directory writable: {os.access(LOGS_DIR, os.W_OK)}")
 
 
 # ==================== Models ====================
@@ -65,7 +81,8 @@ def load_logs_for_date(date_str: str = None):
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
-        except (json.JSONDecodeError, IOError):
+        except (json.JSONDecodeError, IOError) as e:
+            logger.error(f"Error loading logs: {e}")
             return []
     return []
 
@@ -78,9 +95,16 @@ def save_logs_for_date(logs: list, date_str: str = None):
     file_path = get_logs_file_path(date_str)
 
     try:
+        # Crear directorio si no existe
+        os.makedirs(LOGS_DIR, exist_ok=True)
+
         with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(logs, f, indent=2, ensure_ascii=False)
+
+        logger.info(f"Logs saved to {file_path} ({len(logs)} entries)")
+
     except IOError as e:
+        logger.error(f"Error writing logs to {file_path}: {e}")
         raise Exception(f"Error writing logs: {e}")
 
 
@@ -109,7 +133,9 @@ async def health_check():
     return {
         "status": "healthy",
         "service": "logging_service",
-        "timestamp": datetime.utcnow().isoformat() + 'Z'
+        "timestamp": datetime.utcnow().isoformat() + 'Z',
+        "logs_directory": LOGS_DIR,
+        "directory_writable": os.access(LOGS_DIR, os.W_OK)
     }
 
 
@@ -136,6 +162,7 @@ async def create_log(log: LogEntry):
 
         # Validar campos requeridos
         if not log.module or not log.api or not log.function or not log.message:
+            logger.warning(f"Missing required fields in log")
             raise HTTPException(
                 status_code=400,
                 detail="Fields 'module', 'api', 'function', and 'message' are required"
@@ -153,6 +180,8 @@ async def create_log(log: LogEntry):
         # Guardar logs
         save_logs_for_date(logs, current_date)
 
+        logger.info(f"Log created: {log.module}.{log.api}.{log.function}")
+
         return LogResponse(
             success=True,
             message="Log saved successfully",
@@ -160,7 +189,10 @@ async def create_log(log: LogEntry):
             date=current_date
         )
 
+    except HTTPException:
+        raise
     except Exception as e:
+        logger.error(f"Error creating log: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -186,6 +218,7 @@ async def get_logs_by_date(date_str: str):
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
     except Exception as e:
+        logger.error(f"Error retrieving logs: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -196,6 +229,8 @@ async def get_logs_today():
         current_date = get_current_date()
         logs = load_logs_for_date(current_date)
 
+        logger.info(f"Retrieved {len(logs)} logs for today ({current_date})")
+
         return {
             "date": current_date,
             "count": len(logs),
@@ -203,6 +238,7 @@ async def get_logs_today():
         }
 
     except Exception as e:
+        logger.error(f"Error retrieving logs: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -224,6 +260,7 @@ async def get_latest_logs(limit: int = 100):
         }
 
     except Exception as e:
+        logger.error(f"Error retrieving logs: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -236,6 +273,8 @@ async def get_logs_by_module(module: str):
 
         filtered_logs = [log for log in logs if log['module'] == module.upper()]
 
+        logger.info(f"Retrieved {len(filtered_logs)} logs for module {module}")
+
         return {
             "date": current_date,
             "module": module.upper(),
@@ -244,7 +283,17 @@ async def get_logs_by_module(module: str):
         }
 
     except Exception as e:
+        logger.error(f"Error retrieving logs: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Evento ejecutado al iniciar la aplicación"""
+    logger.info("=== Logging Service Started ===")
+    logger.info(f"Logs directory: {LOGS_DIR}")
+    logger.info(f"Directory exists: {os.path.exists(LOGS_DIR)}")
+    logger.info(f"Directory writable: {os.access(LOGS_DIR, os.W_OK)}")
 
 
 if __name__ == '__main__':
