@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+*.md
+docs/
+
+# Old structure (before app/ reorganization)
+logging_service/
+poke_api/
+poke_stats/
+poke_images/
+search_api/
+database/
+
+# Test and temp files
+*.test.py
+.pytest_cache
+temp/
+tmp/
+
+# Docker and compose
+docker-compose.override.yml
+.env.local
+
+# Logs (development)
+*.log
