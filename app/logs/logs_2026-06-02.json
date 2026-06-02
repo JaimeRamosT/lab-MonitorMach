@@ -1,0 +1,134 @@
+[
+  {
+    "timestamp": "2026-06-02T21:56:06.472260Z",
+    "date": "2026-06-02",
+    "module": "POKE_STATS",
+    "api": "GET_STATS",
+    "function": "get_pokemon_stats",
+    "message": "Pokemon encontrado: pikachu",
+    "level": "INFO",
+    "latency_ms": 32.02509880065918,
+    "request_id": "dd69bfa8"
+  },
+  {
+    "timestamp": "2026-06-02T21:56:06.515620Z",
+    "date": "2026-06-02",
+    "module": "POKE_IMAGES",
+    "api": "GET_IMAGES",
+    "function": "get_pokemon_images",
+    "message": "Found 6 images for pikachu",
+    "level": "INFO",
+    "latency_ms": 92.12303161621094,
+    "request_id": "3b08fe4a"
+  },
+  {
+    "timestamp": "2026-06-02T21:56:06.785194Z",
+    "date": "2026-06-02",
+    "module": "POKE_API",
+    "api": "GET_POKEMON",
+    "function": "get_pokemon",
+    "message": "Pokemon obtenido de PokeAPI: pikachu (ID: 25)",
+    "level": "INFO",
+    "latency_ms": 363.0979061126709,
+    "request_id": "4fe1424c"
+  },
+  {
+    "timestamp": "2026-06-02T21:56:06.835725Z",
+    "date": "2026-06-02",
+    "module": "SEARCH_API",
+    "api": "GET_SEARCH",
+    "function": "search_pokemon",
+    "message": "Búsqueda completada para: pikachu",
+    "level": "INFO",
+    "latency_ms": 488.0092144012451,
+    "request_id": "dae42361"
+  },
+  {
+    "timestamp": "2026-06-02T22:03:17.172847Z",
+    "date": "2026-06-02",
+    "module": "POKE_STATS",
+    "api": "GET_STATS",
+    "function": "get_pokemon_stats",
+    "message": "Pokemon encontrado: pikachu",
+    "level": "INFO",
+    "latency_ms": 25.885581970214844,
+    "request_id": "8dc1e1fa"
+  },
+  {
+    "timestamp": "2026-06-02T22:03:17.182813Z",
+    "date": "2026-06-02",
+    "module": "POKE_IMAGES",
+    "api": "GET_IMAGES",
+    "function": "get_pokemon_images",
+    "message": "Found 6 images for pikachu",
+    "level": "INFO",
+    "latency_ms": 23.41461181640625,
+    "request_id": "9f532a12"
+  },
+  {
+    "timestamp": "2026-06-02T22:03:17.501939Z",
+    "date": "2026-06-02",
+    "module": "POKE_API",
+    "api": "GET_POKEMON",
+    "function": "get_pokemon",
+    "message": "Pokemon obtenido de PokeAPI: pikachu (ID: 25)",
+    "level": "INFO",
+    "latency_ms": 359.95960235595703,
+    "request_id": "715bbc82"
+  },
+  {
+    "timestamp": "2026-06-02T22:03:17.523045Z",
+    "date": "2026-06-02",
+    "module": "SEARCH_API",
+    "api": "GET_SEARCH",
+    "function": "search_pokemon",
+    "message": "Búsqueda completada para: pikachu",
+    "level": "INFO",
+    "latency_ms": 430.51624298095703,
+    "request_id": "6a4f9373"
+  },
+  {
+    "timestamp": "2026-06-02T22:04:49.898650Z",
+    "date": "2026-06-02",
+    "module": "POKE_STATS",
+    "api": "GET_STATS",
+    "function": "get_pokemon_stats",
+    "message": "Pokemon encontrado: pikachu",
+    "level": "INFO",
+    "latency_ms": 11.831521987915039,
+    "request_id": "5a6c2e21"
+  },
+  {
+    "timestamp": "2026-06-02T22:04:49.909697Z",
+    "date": "2026-06-02",
+    "module": "POKE_IMAGES",
+    "api": "GET_IMAGES",
+    "function": "get_pokemon_images",
+    "message": "Found 6 images for pikachu",
+    "level": "INFO",
+    "latency_ms": 27.33635902404785,
+    "request_id": "bfbaa281"
+  },
+  {
+    "timestamp": "2026-06-02T22:04:50.254453Z",
+    "date": "2026-06-02",
+    "module": "POKE_API",
+    "api": "GET_POKEMON",
+    "function": "get_pokemon",
+    "message": "Pokemon obtenido de PokeAPI: pikachu (ID: 25)",
+    "level": "INFO",
+    "latency_ms": 362.8261089324951,
+    "request_id": "ba2bf012"
+  },
+  {
+    "timestamp": "2026-06-02T22:04:50.278270Z",
+    "date": "2026-06-02",
+    "module": "SEARCH_API",
+    "api": "GET_SEARCH",
+    "function": "search_pokemon",
+    "message": "Búsqueda completada para: pikachu",
+    "level": "INFO",
+    "latency_ms": 429.81672286987305,
+    "request_id": "e91eb829"
+  }
+]
