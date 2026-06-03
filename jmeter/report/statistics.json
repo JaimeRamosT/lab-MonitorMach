@@ -1,0 +1,34 @@
+{
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 10000,
+    "errorCount" : 10000,
+    "errorPct" : 100.0,
+    "meanResTime" : 16750.36589999999,
+    "medianResTime" : 15695.0,
+    "minResTime" : 14950.0,
+    "maxResTime" : 20277.0,
+    "pct1ResTime" : 20003.0,
+    "pct2ResTime" : 20004.0,
+    "pct3ResTime" : 20012.989999999998,
+    "throughput" : 5.5932759873390605,
+    "receivedKBytesPerSec" : 4.141542297261924,
+    "sentKBytesPerSec" : 0.6281401874922043
+  },
+  "GET /poke/search" : {
+    "transaction" : "GET /poke/search",
+    "sampleCount" : 10000,
+    "errorCount" : 10000,
+    "errorPct" : 100.0,
+    "meanResTime" : 16750.36589999999,
+    "medianResTime" : 15695.0,
+    "minResTime" : 14950.0,
+    "maxResTime" : 20277.0,
+    "pct1ResTime" : 20003.0,
+    "pct2ResTime" : 20004.0,
+    "pct3ResTime" : 20012.989999999998,
+    "throughput" : 5.5932759873390605,
+    "receivedKBytesPerSec" : 4.141542297261924,
+    "sentKBytesPerSec" : 0.6281401874922043
+  }
+}
