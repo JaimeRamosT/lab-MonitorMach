@@ -1,0 +1,31 @@
+2026-06-02 19:25:59,606 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2026-06-02 19:25:59,633 INFO o.a.j.JMeter: Loading user properties from: C:\Users\HP\Downloads\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\user.properties
+2026-06-02 19:25:59,635 INFO o.a.j.JMeter: Loading system properties from: C:\Users\HP\Downloads\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\system.properties
+2026-06-02 19:25:59,635 INFO o.a.j.JMeter: Setting JMeter property: THREAD_COUNT=1
+2026-06-02 19:25:59,635 INFO o.a.j.JMeter: Setting JMeter property: LOOP_COUNT=10
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: Version 5.6.3
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: java.version=25.0.1
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: os.name=Windows 11
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: os.arch=amd64
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: os.version=10.0
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: file.encoding=UTF-8
+2026-06-02 19:25:59,649 INFO o.a.j.JMeter: java.awt.headless=true
+2026-06-02 19:25:59,650 INFO o.a.j.JMeter: Max memory     =1073741824
+2026-06-02 19:25:59,650 INFO o.a.j.JMeter: Available Processors =8
+2026-06-02 19:25:59,677 INFO o.a.j.JMeter: Default Locale=English (EN)
+2026-06-02 19:25:59,678 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2026-06-02 19:25:59,678 INFO o.a.j.JMeter: JMeterHome=C:\Users\HP\Downloads\apache-jmeter-5.6.3\apache-jmeter-5.6.3
+2026-06-02 19:25:59,678 INFO o.a.j.JMeter: user.dir  =C:\Users\HP\Desktop\UTEC\ArquiSoft\semana10
+2026-06-02 19:25:59,678 INFO o.a.j.JMeter: PWD       =C:\Users\HP\Desktop\UTEC\ArquiSoft\semana10
+2026-06-02 19:25:59,680 INFO o.a.j.JMeter: IP: 192.168.1.35 Name: DESKTOP-68UP0AB FullName: host.docker.internal
+2026-06-02 19:25:59,702 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'C:\Users\HP\Desktop\UTEC\ArquiSoft\semana10\report'
+2026-06-02 19:25:59,703 ERROR o.a.j.JMeter: An error occurred: 
+org.apache.jmeter.report.config.ConfigurationException: The file C:\Users\HP\Desktop\UTEC\ArquiSoft\semana10\test_plan.jmx doesn't exist or can't be opened
+	at org.apache.jmeter.JMeter.runNonGui(JMeter.java:950) ~[ApacheJMeter_core.jar:5.6.3]
+	at org.apache.jmeter.JMeter.startNonGui(JMeter.java:940) ~[ApacheJMeter_core.jar:5.6.3]
+	at org.apache.jmeter.JMeter.start(JMeter.java:508) [ApacheJMeter_core.jar:5.6.3]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at org.apache.jmeter.NewDriver.main(NewDriver.java:259) [ApacheJMeter.jar:5.6.3]
